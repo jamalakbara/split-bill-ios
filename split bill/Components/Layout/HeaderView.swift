@@ -39,7 +39,7 @@ struct HeaderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            HStack {
+            HStack(spacing: 16) {
                 // Back button
                 if showBackButton {
                     CircularIconButton(
@@ -49,12 +49,11 @@ struct HeaderView: View {
                         }
                     )
                 } else {
-                    Spacer()
+                    Color.clear
+                        .frame(width: 56, height: 56)
                 }
 
-                if showBackButton && showEditButton {
-                    Spacer()
-                }
+                Spacer()
 
                 // Title
                 Text(title)
@@ -62,9 +61,7 @@ struct HeaderView: View {
                     .fontWeight(.bold)
                     .foregroundColor(foregroundColor)
 
-                if showBackButton && showEditButton {
-                    Spacer()
-                }
+                Spacer()
 
                 // Edit button
                 if showEditButton {
@@ -75,7 +72,8 @@ struct HeaderView: View {
                         }
                     )
                 } else {
-                    Spacer()
+                    Color.clear
+                        .frame(width: 56, height: 56)
                 }
             }
             .padding(.horizontal, 24)

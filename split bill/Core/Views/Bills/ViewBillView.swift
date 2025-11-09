@@ -9,8 +9,9 @@ import SwiftUI
 
 struct ViewBillView: View {
     let bill: RecentBill
+    @Binding var showViewBill: Bool
+    @Binding var selectedBill: RecentBill?
     @State private var expandedPerson: Int? = nil
-    @Environment(\.dismiss) private var dismiss
 
     // Sample data for demonstration - in real app this would come from the bill
     let people = [
@@ -42,7 +43,8 @@ struct ViewBillView: View {
             showBackButton: true,
             showEditButton: true,
             backButtonAction: {
-                dismiss()
+                showViewBill = false
+                selectedBill = nil
             },
             editButtonAction: {
                 // Edit bill action
@@ -276,7 +278,9 @@ struct ViewBillView: View {
                     cornerRadius: 28,
                     shadowOffset: 4,
                     action: {
-                        dismiss()
+                        // TODO: Implement share functionality
+                        // For now, just print a message
+                        print("Share button tapped - would show share sheet")
                     }
                 )
                 .padding(EdgeInsets(top: DesignConstants.formButtonSpacing, leading: 0, bottom: DesignConstants.contentSpacing / 3, trailing: 0))
@@ -288,12 +292,25 @@ struct ViewBillView: View {
 
 
 #Preview {
-    ViewBillView(bill: RecentBill(
-        id: 1,
-        title: "Dinner at Pizza Place",
-        date: "Nov 5, 2025",
-        amount: 45.50,
-        type: "owe",
-        friend: "Sarah"
-    ))
+    ViewBillView(
+        bill: RecentBill(
+            id: 1,
+            title: "Dinner at Pizza Place",
+            date: "Nov 5, 2025",
+            amount: 45.50,
+            type: "owe",
+            friend: "Sarah"
+        ),
+        showViewBill: .constant(true),
+        selectedBill: .constant(
+            RecentBill(
+                id: 1,
+                title: "Dinner at Pizza Place",
+                date: "Nov 5, 2025",
+                amount: 45.50,
+                type: "owe",
+                friend: "Sarah"
+            )
+        )
+    )
 }

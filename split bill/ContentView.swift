@@ -13,12 +13,15 @@ struct ContentView: View {
     @State private var showMainScreen = false
     @State private var showViewBill = false
     @State private var selectedBill: RecentBill?
+    @State private var showSettings = false
 
     var body: some View {
         if showViewBill, let bill = selectedBill {
-            ViewBillView(bill: bill)
+            ViewBillView(bill: bill, showViewBill: $showViewBill, selectedBill: $selectedBill)
+        } else if showSettings {
+            SettingsView(showSettings: $showSettings)
         } else if showMainScreen {
-            MainScreenView(showViewBill: $showViewBill, selectedBill: $selectedBill)
+            MainScreenView(showViewBill: $showViewBill, selectedBill: $selectedBill, showSettings: $showSettings)
         } else if showOnboarding {
             OnboardingView(showMainScreen: $showMainScreen)
         } else if showSignUp {

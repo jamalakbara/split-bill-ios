@@ -10,6 +10,7 @@ import SwiftUI
 struct MainScreenView: View {
     @Binding var showViewBill: Bool
     @Binding var selectedBill: RecentBill?
+    @Binding var showSettings: Bool
 
     let recentBills = [
         RecentBill(
@@ -40,7 +41,7 @@ struct MainScreenView: View {
 
     var body: some View {
         ZStack {
-            // Background
+            // Background layer
             DesignConstants.Colors.background
                 .ignoresSafeArea()
 
@@ -239,7 +240,9 @@ struct MainScreenView: View {
                     NavigationTabButton(
                         icon: "gearshape",
                         text: "Settings",
-                        action: {}
+                        action: {
+                            showSettings = true
+                        }
                     )
                 }
                 .padding(.horizontal, 24)
@@ -272,10 +275,10 @@ struct MainScreenView: View {
                 }
                 .ignoresSafeArea(edges: .bottom)
             )
+          }
         }
     }
-}
 
 #Preview {
-    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil))
+    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false))
 }
