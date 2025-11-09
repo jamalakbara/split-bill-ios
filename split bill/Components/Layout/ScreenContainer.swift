@@ -14,6 +14,7 @@ struct ScreenContainer<Content: View>: View {
     let showEditButton: Bool
     let backButtonAction: (() -> Void)?
     let editButtonAction: (() -> Void)?
+    let editButtonIcon: String
     let hasScrollView: Bool
     let customTopPadding: CGFloat?
     let content: () -> Content
@@ -25,6 +26,7 @@ struct ScreenContainer<Content: View>: View {
         showEditButton: Bool = false,
         backButtonAction: (() -> Void)? = nil,
         editButtonAction: (() -> Void)? = nil,
+        editButtonIcon: String = "pencil",
         hasScrollView: Bool = false,
         customTopPadding: CGFloat? = nil,
         @ViewBuilder content: @escaping () -> Content
@@ -35,6 +37,7 @@ struct ScreenContainer<Content: View>: View {
         self.showEditButton = showEditButton
         self.backButtonAction = backButtonAction
         self.editButtonAction = editButtonAction
+        self.editButtonIcon = editButtonIcon
         self.hasScrollView = hasScrollView
         self.customTopPadding = customTopPadding
         self.content = content
@@ -53,7 +56,8 @@ struct ScreenContainer<Content: View>: View {
                         showBackButton: showBackButton,
                         showEditButton: showEditButton,
                         backButtonAction: backButtonAction ?? {},
-                        editButtonAction: editButtonAction ?? {}
+                        editButtonAction: editButtonAction ?? {},
+                        editButtonIcon: editButtonIcon
                     )
                 }
 

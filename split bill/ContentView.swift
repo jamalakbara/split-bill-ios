@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var selectedUserProfile: UserProfile?
     @State private var userProfileFromSettings = false  // Track if user came from settings
     @State private var showNotifications = false
+    @State private var showFriends = false
 
     var body: some View {
         if showViewBill, let bill = selectedBill {
@@ -36,6 +37,14 @@ struct ContentView: View {
                         .presentationDragIndicator(.visible)
                         .presentationCornerRadius(DesignConstants.CornerRadius.large)
                 }
+        } else if showFriends {
+            FriendsView(showFriends: $showFriends, showUserProfile: $showUserProfile, selectedUserProfile: $selectedUserProfile, showNotifications: $showNotifications)
+                .sheet(isPresented: $showNotifications) {
+                    NotificationsView(showNotifications: $showNotifications)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                        .presentationCornerRadius(DesignConstants.CornerRadius.large)
+                }
         } else if showUserProfile {
             UserProfileView(showUserProfile: $showUserProfile, userProfileFromSettings: $userProfileFromSettings, showNotifications: $showNotifications, userProfile: selectedUserProfile)
                 .sheet(isPresented: $showNotifications) {
@@ -45,7 +54,7 @@ struct ContentView: View {
                         .presentationCornerRadius(DesignConstants.CornerRadius.large)
                 }
         } else if showMainScreen {
-            MainScreenView(showViewBill: $showViewBill, selectedBill: $selectedBill, showSettings: $showSettings, showNotifications: $showNotifications)
+            MainScreenView(showViewBill: $showViewBill, selectedBill: $selectedBill, showSettings: $showSettings, showNotifications: $showNotifications, showFriends: $showFriends)
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(showNotifications: $showNotifications)
                         .presentationDetents([.medium, .large])
@@ -78,6 +87,6 @@ struct ContentView: View {
     }
 }
 
-#Preview {
+#Preview("Login View") {
     ContentView()
 }

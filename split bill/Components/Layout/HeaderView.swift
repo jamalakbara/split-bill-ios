@@ -16,6 +16,7 @@ struct HeaderView: View {
     let showEditButton: Bool
     let backButtonAction: (() -> Void)?
     let editButtonAction: (() -> Void)?
+    let editButtonIcon: String
 
     init(
         title: String,
@@ -25,7 +26,8 @@ struct HeaderView: View {
         showBackButton: Bool = true,
         showEditButton: Bool = false,
         backButtonAction: (() -> Void)? = nil,
-        editButtonAction: (() -> Void)? = nil
+        editButtonAction: (() -> Void)? = nil,
+        editButtonIcon: String = "pencil"
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
@@ -35,6 +37,7 @@ struct HeaderView: View {
         self.showEditButton = showEditButton
         self.backButtonAction = backButtonAction
         self.editButtonAction = editButtonAction
+        self.editButtonIcon = editButtonIcon
     }
 
     var body: some View {
@@ -66,7 +69,7 @@ struct HeaderView: View {
                 // Edit button
                 if showEditButton {
                     CircularIconButton(
-                        icon: "pencil",
+                        icon: editButtonIcon,
                         action: {
                             editButtonAction?()
                         }

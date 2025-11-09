@@ -50,7 +50,7 @@ struct SettingsView: View {
             },
             hasScrollView: true
         ) {
-            LazyVStack(spacing: DesignConstants.sectionSpacing) {
+            LazyVStack(spacing: DesignConstants.contentSpacing) {
                 // Profile Card
                 profileCard
 
@@ -139,7 +139,7 @@ struct SettingsView: View {
                 }
 
                 // Section Items
-                VStack(spacing: 8) {
+                VStack(spacing: DesignConstants.contentSpacing) {
                     ForEach(section.items.indices, id: \.self) { itemIndex in
                         let item = section.items[itemIndex]
                         settingsItemButton(item: item)

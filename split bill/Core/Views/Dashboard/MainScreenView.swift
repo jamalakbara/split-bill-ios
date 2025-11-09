@@ -12,6 +12,7 @@ struct MainScreenView: View {
     @Binding var selectedBill: RecentBill?
     @Binding var showSettings: Bool
     @Binding var showNotifications: Bool
+    @Binding var showFriends: Bool
 
     let recentBills = [
         RecentBill(
@@ -233,7 +234,12 @@ struct MainScreenView: View {
                     NavigationTabButton(
                         icon: "person.3",
                         text: "People",
-                        action: {}
+                        isActive: false,
+                        activeColor: DesignConstants.Colors.secondary,
+                        inactiveColor: DesignConstants.Colors.primary,
+                        action: {
+                            showFriends = true
+                        }
                     )
 
                     Spacer()
@@ -281,5 +287,5 @@ struct MainScreenView: View {
     }
 
 #Preview {
-    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false), showNotifications: .constant(false))
+    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false), showNotifications: .constant(false), showFriends: .constant(false))
 }
