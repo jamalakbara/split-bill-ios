@@ -11,6 +11,7 @@ struct MainScreenView: View {
     @Binding var showViewBill: Bool
     @Binding var selectedBill: RecentBill?
     @Binding var showSettings: Bool
+    @Binding var showNotifications: Bool
 
     let recentBills = [
         RecentBill(
@@ -62,7 +63,7 @@ struct MainScreenView: View {
                         CircularIconButton(
                             icon: "bell",
                             action: {
-                                // Notification action
+                                showNotifications = true
                             }
                         )
                     }
@@ -280,5 +281,5 @@ struct MainScreenView: View {
     }
 
 #Preview {
-    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false))
+    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false), showNotifications: .constant(false))
 }

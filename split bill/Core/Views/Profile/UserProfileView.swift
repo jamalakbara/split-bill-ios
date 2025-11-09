@@ -10,6 +10,7 @@ import SwiftUI
 struct UserProfileView: View {
     @Binding var showUserProfile: Bool
     @Binding var userProfileFromSettings: Bool
+    @Binding var showNotifications: Bool
     let userProfile: UserProfile?
 
     // Mock debt data for friends
@@ -100,7 +101,9 @@ struct UserProfileView: View {
                         icon: "bell",
                         backgroundColor: DesignConstants.Colors.secondary,
                         action: {
-                            // Navigate to notifications
+                            userProfileFromSettings = false
+                            showUserProfile = false
+                            showNotifications = true
                         }
                     )
                     .padding(.trailing, 24)
@@ -609,5 +612,5 @@ struct UserProfileView: View {
 }
 
 #Preview {
-    UserProfileView(showUserProfile: .constant(true), userProfileFromSettings: .constant(false), userProfile: nil)
+    UserProfileView(showUserProfile: .constant(true), userProfileFromSettings: .constant(false), showNotifications: .constant(false), userProfile: nil)
 }
