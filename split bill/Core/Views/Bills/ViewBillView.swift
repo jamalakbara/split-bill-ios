@@ -11,6 +11,9 @@ struct ViewBillView: View {
     let bill: RecentBill
     @Binding var showViewBill: Bool
     @Binding var selectedBill: RecentBill?
+    @Binding var showUserProfile: Bool
+    @Binding var selectedUserProfile: UserProfile?
+    @Binding var userProfileFromSettings: Bool
     @State private var expandedPerson: Int? = nil
 
     // Sample data for demonstration - in real app this would come from the bill
@@ -73,7 +76,15 @@ struct ViewBillView: View {
                                 // Person Header Section
                                 VStack(spacing: 0) {
                                     Button(action: {
-                                        // Navigate to profile
+                                        // Navigate to friend's profile
+                                        selectedUserProfile = UserProfile(
+                                            id: person.id,
+                                            name: person.name,
+                                            image: person.image
+                                        )
+                                        userProfileFromSettings = false  // Not from settings
+                                        showViewBill = false
+                                        showUserProfile = true
                                     }) {
                                         HStack(spacing: 12) {
                                         // Person Image
@@ -311,6 +322,9 @@ struct ViewBillView: View {
                 type: "owe",
                 friend: "Sarah"
             )
-        )
+        ),
+        showUserProfile: .constant(false),
+        selectedUserProfile: .constant(nil),
+        userProfileFromSettings: .constant(false)
     )
 }
