@@ -12,6 +12,7 @@ struct SettingsView: View {
     @Binding var showUserProfile: Bool
     @Binding var userProfileFromSettings: Bool
     @Binding var showNotifications: Bool
+    @Binding var showAchievements: Bool
     @State private var userName = "stambol"
     @State private var userEmail = "stambol@email.com"
     @State private var profileImageURL = "https://images.unsplash.com/photo-1750535135451-7c20e24b60c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJ0b29uJTIwYXZhdGFyJTIwaWxsdXN0cmF0aW9ufGVufDF8fHx8MTc2MjU2OTYwOHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
@@ -66,7 +67,7 @@ struct SettingsView: View {
         }
     }
 
-  
+
     // MARK: - Profile Card (Scrollable version)
     private var profileCard: some View {
         StandardCard {
@@ -216,8 +217,8 @@ struct SettingsView: View {
             // Navigate to payment methods
             break
         case "Achievements":
-            // Navigate to achievements
-            break
+            showSettings = false
+            showAchievements = true
         case "Notifications":
             showNotifications = true
         case "Privacy & Security":
@@ -247,5 +248,5 @@ struct SettingsItem {
 
 // MARK: - Preview
 #Preview {
-    SettingsView(showSettings: .constant(false), showUserProfile: .constant(false), userProfileFromSettings: .constant(false), showNotifications: .constant(false))
+    SettingsView(showSettings: .constant(false), showUserProfile: .constant(false), userProfileFromSettings: .constant(false), showNotifications: .constant(false), showAchievements: .constant(false))
 }

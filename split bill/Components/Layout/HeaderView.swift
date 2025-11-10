@@ -74,8 +74,8 @@ struct HeaderView: View {
 
                 Spacer()
 
-                // Title (only for simple headers)
-                if headerType == .simple, let title = title {
+                // Title (for simple and custom headers)
+                if (headerType == .simple || headerType == .custom), let title = title {
                     Text(title)
                         .font(.custom("Roboto", size: 24))
                         .fontWeight(.bold)

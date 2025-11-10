@@ -18,6 +18,7 @@ struct ContentView: View {
     @State private var selectedUserProfile: UserProfile?
     @State private var userProfileFromSettings = false  // Track if user came from settings
     @State private var showNotifications = false
+    @State private var showAchievements = false
     @State private var showFriends = false
     @State private var showGroups = false
     @State private var showGroupDetail = false
@@ -33,7 +34,15 @@ struct ContentView: View {
                         .presentationCornerRadius(DesignConstants.CornerRadius.large)
                 }
         } else if showSettings {
-            SettingsView(showSettings: $showSettings, showUserProfile: $showUserProfile, userProfileFromSettings: $userProfileFromSettings, showNotifications: $showNotifications)
+            SettingsView(showSettings: $showSettings, showUserProfile: $showUserProfile, userProfileFromSettings: $userProfileFromSettings, showNotifications: $showNotifications, showAchievements: $showAchievements)
+                .sheet(isPresented: $showNotifications) {
+                    NotificationsView(showNotifications: $showNotifications)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                        .presentationCornerRadius(DesignConstants.CornerRadius.large)
+                }
+        } else if showAchievements {
+            AchievementsView(showAchievements: $showAchievements, showSettings: $showSettings, showNotifications: $showNotifications)
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(showNotifications: $showNotifications)
                         .presentationDetents([.medium, .large])
@@ -49,7 +58,7 @@ struct ContentView: View {
                         .presentationCornerRadius(DesignConstants.CornerRadius.large)
                 }
         } else if showFriends {
-            FriendsView(showFriends: $showFriends, showUserProfile: $showUserProfile, selectedUserProfile: $selectedUserProfile, showNotifications: $showNotifications)
+            FriendsView(showFriends: $showFriends, showUserProfile: $showUserProfile, selectedUserProfile: $selectedUserProfile, showNotifications: $showNotifications, showSettings: $showSettings, userProfileFromSettings: $userProfileFromSettings)
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(showNotifications: $showNotifications)
                         .presentationDetents([.medium, .large])

@@ -70,14 +70,16 @@ struct NotificationsView: View {
 
     var body: some View {
         ScreenContainer(
+            title: nil,
             backgroundColor: DesignConstants.Colors.background,
-            showBackButton: true,
-            backButtonAction: {
-                showNotifications = false
-            },
+            showBackButton: false,
+            showEditButton: false,
             hasScrollView: true
         ) {
             LazyVStack(spacing: DesignConstants.contentSpacing) {
+                // Simple Header
+                headerSection
+
                 // Unread Notifications Banner
                 if unreadCount > 0 {
                     unreadNotificationsBanner
@@ -91,6 +93,31 @@ struct NotificationsView: View {
                     .frame(height: DesignConstants.verticalPadding)
             }
         }
+    }
+
+    // MARK: - Header Section
+    private var headerSection: some View {
+        HStack {
+            // Title
+            Text("Notifications")
+                .font(DesignConstants.Typography.title1)
+                .fontWeight(.bold)
+                .foregroundColor(DesignConstants.Colors.textPrimary)
+
+            Spacer()
+
+            // Close button
+            Button(action: {
+                showNotifications = false
+            }) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 16, weight: .medium))
+                    .foregroundColor(DesignConstants.Colors.textSecondary)
+            }
+            .frame(width: 32, height: 32)
+        }
+        .padding(.horizontal, DesignConstants.horizontalPadding)
+        .padding(.vertical, 16)
     }
 
     // MARK: - Unread Notifications Banner

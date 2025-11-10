@@ -12,6 +12,8 @@ struct FriendsView: View {
     @Binding var showUserProfile: Bool
     @Binding var selectedUserProfile: UserProfile?
     @Binding var showNotifications: Bool
+    @Binding var showSettings: Bool
+    @Binding var userProfileFromSettings: Bool
 
     @State private var selectedFriends: [Friend] = []
     @State private var searchQuery = ""
@@ -109,7 +111,10 @@ struct FriendsView: View {
                     NavigationTabButton(
                         icon: "gearshape",
                         text: "Settings",
-                        action: {}
+                        action: {
+                            showFriends = false
+                            showSettings = true
+                        }
                     )
                 }
                 .padding(.horizontal, 24)
@@ -411,6 +416,8 @@ struct FriendsView: View {
         showFriends: .constant(true),
         showUserProfile: .constant(false),
         selectedUserProfile: .constant(nil),
-        showNotifications: .constant(false)
+        showNotifications: .constant(false),
+        showSettings: .constant(false),
+        userProfileFromSettings: .constant(false)
     )
 }
