@@ -17,6 +17,9 @@ struct ScreenContainer<Content: View>: View {
     let editButtonIcon: String
     let hasScrollView: Bool
     let customTopPadding: CGFloat?
+    let headerType: HeaderType
+    let customHeaderContent: HeaderContentView?
+    let headerHeight: CGFloat
     let content: () -> Content
 
     init(
@@ -29,6 +32,9 @@ struct ScreenContainer<Content: View>: View {
         editButtonIcon: String = "pencil",
         hasScrollView: Bool = false,
         customTopPadding: CGFloat? = nil,
+        headerType: HeaderType = .simple,
+        customHeaderContent: HeaderContentView? = nil,
+        headerHeight: CGFloat = 120,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
@@ -40,6 +46,9 @@ struct ScreenContainer<Content: View>: View {
         self.editButtonIcon = editButtonIcon
         self.hasScrollView = hasScrollView
         self.customTopPadding = customTopPadding
+        self.headerType = headerType
+        self.customHeaderContent = customHeaderContent
+        self.headerHeight = headerHeight
         self.content = content
     }
 
@@ -49,15 +58,18 @@ struct ScreenContainer<Content: View>: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header
-                if let title = title {
+                // Header - always show if any button is needed or custom content
+                if showBackButton || showEditButton || customHeaderContent != nil || headerType != .simple {
                     HeaderView(
                         title: title,
                         showBackButton: showBackButton,
                         showEditButton: showEditButton,
                         backButtonAction: backButtonAction ?? {},
                         editButtonAction: editButtonAction ?? {},
-                        editButtonIcon: editButtonIcon
+                        editButtonIcon: editButtonIcon,
+                        headerType: headerType,
+                        customContent: customHeaderContent,
+                        headerHeight: headerHeight
                     )
                 }
 

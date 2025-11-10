@@ -19,6 +19,9 @@ struct ContentView: View {
     @State private var userProfileFromSettings = false  // Track if user came from settings
     @State private var showNotifications = false
     @State private var showFriends = false
+    @State private var showGroups = false
+    @State private var showGroupDetail = false
+    @State private var selectedGroup: GroupModel?
 
     var body: some View {
         if showViewBill, let bill = selectedBill {
@@ -37,8 +40,24 @@ struct ContentView: View {
                         .presentationDragIndicator(.visible)
                         .presentationCornerRadius(DesignConstants.CornerRadius.large)
                 }
+        } else if showGroupDetail, let group = selectedGroup {
+            GroupDetailView(group: group, showGroupDetail: $showGroupDetail, showGroups: $showGroups, showNotifications: $showNotifications, showSettings: $showSettings)
+                .sheet(isPresented: $showNotifications) {
+                    NotificationsView(showNotifications: $showNotifications)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                        .presentationCornerRadius(DesignConstants.CornerRadius.large)
+                }
         } else if showFriends {
             FriendsView(showFriends: $showFriends, showUserProfile: $showUserProfile, selectedUserProfile: $selectedUserProfile, showNotifications: $showNotifications)
+                .sheet(isPresented: $showNotifications) {
+                    NotificationsView(showNotifications: $showNotifications)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                        .presentationCornerRadius(DesignConstants.CornerRadius.large)
+                }
+        } else if showGroups {
+            GroupsView(showGroups: $showGroups, showNotifications: $showNotifications, showGroupDetail: $showGroupDetail, selectedGroup: $selectedGroup, userProfileFromSettings: $userProfileFromSettings, showUserProfile: $showUserProfile, showSettings: $showSettings)
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(showNotifications: $showNotifications)
                         .presentationDetents([.medium, .large])
@@ -55,6 +74,9 @@ struct ContentView: View {
                 }
         } else if showMainScreen {
             MainScreenView(showViewBill: $showViewBill, selectedBill: $selectedBill, showSettings: $showSettings, showNotifications: $showNotifications, showFriends: $showFriends)
+                .onReceive(NotificationCenter.default.publisher(for: .init("NavigateToGroups"))) { _ in
+                    showGroups = true
+                }
                 .sheet(isPresented: $showNotifications) {
                     NotificationsView(showNotifications: $showNotifications)
                         .presentationDetents([.medium, .large])

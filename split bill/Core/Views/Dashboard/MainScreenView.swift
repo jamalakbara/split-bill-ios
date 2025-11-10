@@ -219,7 +219,9 @@ struct MainScreenView: View {
                     NavigationTabButton(
                         icon: "person.2",
                         text: "Groups",
-                        action: {}
+                        action: {
+                            NotificationCenter.default.post(name: .init("NavigateToGroups"), object: nil)
+                        }
                     )
 
                     Spacer()

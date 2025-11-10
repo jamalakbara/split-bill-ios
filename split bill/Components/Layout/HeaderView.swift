@@ -7,8 +7,14 @@
 
 import SwiftUI
 
+enum HeaderType {
+    case simple
+    case detail
+    case custom
+}
+
 struct HeaderView: View {
-    let title: String
+    let title: String?
     let backgroundColor: Color
     let foregroundColor: Color
     let cornerRadius: CGFloat
@@ -17,9 +23,12 @@ struct HeaderView: View {
     let backButtonAction: (() -> Void)?
     let editButtonAction: (() -> Void)?
     let editButtonIcon: String
+    let headerType: HeaderType
+    let customContent: HeaderContentView?
+    let headerHeight: CGFloat
 
     init(
-        title: String,
+        title: String? = nil,
         backgroundColor: Color = Color(hex: "#003049"),
         foregroundColor: Color = .white,
         cornerRadius: CGFloat = 48,
@@ -27,7 +36,10 @@ struct HeaderView: View {
         showEditButton: Bool = false,
         backButtonAction: (() -> Void)? = nil,
         editButtonAction: (() -> Void)? = nil,
-        editButtonIcon: String = "pencil"
+        editButtonIcon: String = "pencil",
+        headerType: HeaderType = .simple,
+        customContent: HeaderContentView? = nil,
+        headerHeight: CGFloat = 120
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
@@ -38,10 +50,14 @@ struct HeaderView: View {
         self.backButtonAction = backButtonAction
         self.editButtonAction = editButtonAction
         self.editButtonIcon = editButtonIcon
+        self.headerType = headerType
+        self.customContent = customContent
+        self.headerHeight = headerHeight
     }
 
     var body: some View {
         VStack(spacing: 0) {
+            // Navigation buttons (always shown)
             HStack(spacing: 16) {
                 // Back button
                 if showBackButton {
@@ -58,11 +74,16 @@ struct HeaderView: View {
 
                 Spacer()
 
-                // Title
-                Text(title)
-                    .font(.custom("Roboto", size: 24))
-                    .fontWeight(.bold)
-                    .foregroundColor(foregroundColor)
+                // Title (only for simple headers)
+                if headerType == .simple, let title = title {
+                    Text(title)
+                        .font(.custom("Roboto", size: 24))
+                        .fontWeight(.bold)
+                        .foregroundColor(foregroundColor)
+                } else {
+                    Color.clear
+                        .frame(width: 100) // Placeholder for centering
+                }
 
                 Spacer()
 
@@ -81,8 +102,20 @@ struct HeaderView: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 24)
-            .padding(.bottom, 24)
+
+            // Custom content (for detail and custom headers)
+            if headerType == .detail || headerType == .custom {
+                if let customContent = customContent {
+                    customContent
+                        .padding(.horizontal, 24)
+                        .padding(.bottom, 24)
+                }
+            } else {
+                Spacer()
+                    .frame(height: 24) // Maintain consistent height for simple headers
+            }
         }
+        .frame(height: headerHeight)
         .background(
             backgroundColor
                 .cornerRadius(cornerRadius, corners: [.bottomLeft, .bottomRight])
@@ -94,28 +127,47 @@ struct HeaderView: View {
 
 #Preview {
     VStack(spacing: 20) {
-        // Header with back and edit buttons
+        // Simple Header with back and edit buttons
         HeaderView(
             title: "Bill Detail",
             showBackButton: true,
             showEditButton: true,
             backButtonAction: { print("Back tapped") },
-            editButtonAction: { print("Edit tapped") }
+            editButtonAction: { print("Edit tapped") },
+            headerType: .simple
         )
 
-        // Header with only back button
+        // Detail Header with custom content
         HeaderView(
-            title: "Settings",
+            showBackButton: true,
+            showEditButton: true,
+            backButtonAction: { print("Back tapped") },
+            editButtonAction: { print("Bell tapped") },
+            editButtonIcon: "bell",
+            headerType: .detail,
+            customContent: HeaderContentView(
+                type: .groupDetail(
+                    groupIcon: "🐻",
+                    groupName: "Roommates",
+                    memberCount: 4,
+                    editButtonAction: { print("Edit group tapped") }
+                )
+            ),
+            headerHeight: 280
+        )
+
+        // Custom Header with simple content
+        HeaderView(
             showBackButton: true,
             showEditButton: false,
-            backButtonAction: { print("Back tapped") }
-        )
-
-        // Header with no buttons
-        HeaderView(
-            title: "Dashboard",
-            showBackButton: false,
-            showEditButton: false
+            backButtonAction: { print("Back tapped") },
+            editButtonAction: nil,
+            editButtonIcon: "pencil",
+            headerType: .custom,
+            customContent: HeaderContentView(
+                type: .simple(title: "Profile", subtitle: "Premium Member")
+            ),
+            headerHeight: 180
         )
     }
     .background(Color(hex: "#eae2b7"))
