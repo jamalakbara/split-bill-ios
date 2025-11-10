@@ -39,7 +39,7 @@ struct HeaderView: View {
         editButtonIcon: String = "pencil",
         headerType: HeaderType = .simple,
         customContent: HeaderContentView? = nil,
-        headerHeight: CGFloat = 120
+        headerHeight: CGFloat = 100
     ) {
         self.title = title
         self.backgroundColor = backgroundColor
@@ -57,51 +57,54 @@ struct HeaderView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Navigation buttons (always shown)
-            HStack(spacing: 16) {
-                // Back button
-                if showBackButton {
-                    CircularIconButton(
-                        icon: "arrow.left",
-                        action: {
-                            backButtonAction?()
-                        }
-                    )
-                } else {
-                    Color.clear
-                        .frame(width: 56, height: 56)
+            // Navigation Header Container
+            VStack(spacing: 0) {
+                // Navigation buttons (always shown)
+                HStack(spacing: 16) {
+                    // Back button
+                    if showBackButton {
+                        CircularIconButton(
+                            icon: "arrow.left",
+                            action: {
+                                backButtonAction?()
+                            }
+                        )
+                    } else {
+                        Color.clear
+                            .frame(width: 56, height: 56)
+                    }
+
+                    Spacer()
+
+                    // Title (for simple and custom headers)
+                    if (headerType == .simple || headerType == .custom), let title = title {
+                        Text(title)
+                            .font(.custom("Roboto", size: 24))
+                            .fontWeight(.bold)
+                            .foregroundColor(foregroundColor)
+                    } else {
+                        Color.clear
+                            .frame(width: 100) // Placeholder for centering
+                    }
+
+                    Spacer()
+
+                    // Edit button
+                    if showEditButton {
+                        CircularIconButton(
+                            icon: editButtonIcon,
+                            action: {
+                                editButtonAction?()
+                            }
+                        )
+                    } else {
+                        Color.clear
+                            .frame(width: 56, height: 56)
+                    }
                 }
-
-                Spacer()
-
-                // Title (for simple and custom headers)
-                if (headerType == .simple || headerType == .custom), let title = title {
-                    Text(title)
-                        .font(.custom("Roboto", size: 24))
-                        .fontWeight(.bold)
-                        .foregroundColor(foregroundColor)
-                } else {
-                    Color.clear
-                        .frame(width: 100) // Placeholder for centering
-                }
-
-                Spacer()
-
-                // Edit button
-                if showEditButton {
-                    CircularIconButton(
-                        icon: editButtonIcon,
-                        action: {
-                            editButtonAction?()
-                        }
-                    )
-                } else {
-                    Color.clear
-                        .frame(width: 56, height: 56)
-                }
+                .padding(.horizontal, 24)
+                .padding(.top, 24)
             }
-            .padding(.horizontal, 24)
-            .padding(.top, 24)
 
             // Custom content (for detail and custom headers)
             if headerType == .detail || headerType == .custom {
@@ -111,10 +114,10 @@ struct HeaderView: View {
                         .padding(.bottom, 24)
                 }
             } else {
-                Spacer()
-                    .frame(height: 24) // Maintain consistent height for simple headers
+                Spacer() // This will take up all remaining space, pushing navigation header to top
             }
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .frame(height: headerHeight)
         .background(
             backgroundColor
@@ -122,6 +125,47 @@ struct HeaderView: View {
                 .ignoresSafeArea(edges: .top)
         )
         .shadow(color: .black.opacity(0.1), radius: 8, y: 4)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel(headerAccessibilityLabel)
+    }
+
+    // MARK: - Accessibility Helpers
+    private var headerAccessibilityLabel: String {
+        var components: [String] = []
+
+        // Add title if available
+        if let title = title, (headerType == .simple || headerType == .custom) {
+            components.append(title)
+        }
+
+        // Add actions
+        if showBackButton {
+            components.append("Back button")
+        }
+
+        if showEditButton {
+            components.append(accessibilityActionLabel(for: editButtonIcon))
+        }
+
+        // For detail headers, use custom content as part of the label
+        if headerType == .detail, let customContent = customContent {
+            components.append("Detail view")
+        }
+
+        return components.isEmpty ? "Header" : components.joined(separator: ", ")
+    }
+
+    private func accessibilityActionLabel(for icon: String) -> String {
+        switch icon {
+        case "bell", "bell.fill":
+            return "Notifications"
+        case "square.and.arrow.up":
+            return "Share"
+        case "pencil", "pencil.circle":
+            return "Edit"
+        default:
+            return "Action"
+        }
     }
 }
 

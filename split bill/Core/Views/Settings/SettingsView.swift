@@ -41,7 +41,11 @@ struct SettingsView: View {
             title: "Settings",
             backgroundColor: DesignConstants.Colors.background,
             showBackButton: false,
-            showEditButton: false,
+            showEditButton: true,
+            editButtonAction: {
+                // Handle notifications - this should be handled by parent view
+            },
+            editButtonIcon: "bell",
             hasScrollView: true
         ) {
             LazyVStack(spacing: DesignConstants.contentSpacing) {

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct GroupDetailView: View {
     let group: GroupModel?
@@ -31,9 +32,21 @@ struct GroupDetailView: View {
                 showGroups = true
             },
             editButtonAction: {
-                // TODO: Navigate to edit group
+                // Share group action
+                guard let group = group else { return }
+
+                let activityViewController = UIActivityViewController(
+                    activityItems: [ShareManager.shareGroup(group)],
+                    applicationActivities: nil
+                )
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootViewController = window.rootViewController {
+                    rootViewController.present(activityViewController, animated: true)
+                }
             },
-            editButtonIcon: "pencil",
+            editButtonIcon: "square.and.arrow.up",
             hasScrollView: true,
             customTopPadding: nil,
             headerType: .detail,
@@ -45,7 +58,7 @@ struct GroupDetailView: View {
                     editButtonAction: nil
                 )
             ),
-            headerHeight: 280
+            headerHeight: 300
         ) {
             VStack(spacing: DesignConstants.sectionSpacing) {
                 // Group Statistics

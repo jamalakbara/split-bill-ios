@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct ViewBillView: View {
     let bill: RecentBill
@@ -50,8 +51,19 @@ struct ViewBillView: View {
                 selectedBill = nil
             },
             editButtonAction: {
-                // Edit bill action
+                // Share bill action
+                let activityViewController = UIActivityViewController(
+                    activityItems: [ShareManager.shareBill(bill)],
+                    applicationActivities: nil
+                )
+
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let window = windowScene.windows.first,
+                   let rootViewController = window.rootViewController {
+                    rootViewController.present(activityViewController, animated: true)
+                }
             },
+            editButtonIcon: "square.and.arrow.up",
             hasScrollView: true
         ) {
             VStack(spacing: DesignConstants.contentSpacing) {
@@ -289,9 +301,17 @@ struct ViewBillView: View {
                     cornerRadius: 28,
                     shadowOffset: 4,
                     action: {
-                        // TODO: Implement share functionality
-                        // For now, just print a message
-                        print("Share button tapped - would show share sheet")
+                        // Share bill action
+                        let activityViewController = UIActivityViewController(
+                            activityItems: [ShareManager.shareBill(bill)],
+                            applicationActivities: nil
+                        )
+
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first,
+                           let rootViewController = window.rootViewController {
+                            rootViewController.present(activityViewController, animated: true)
+                        }
                     }
                 )
                 .padding(EdgeInsets(top: DesignConstants.formButtonSpacing, leading: 0, bottom: DesignConstants.contentSpacing / 3, trailing: 0))

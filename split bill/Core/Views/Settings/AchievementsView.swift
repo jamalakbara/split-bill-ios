@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct AchievementsView: View {
     @Binding var showAchievements: Bool
@@ -34,7 +35,7 @@ struct AchievementsView: View {
             customHeaderContent: HeaderContentView(
                 type: .custom(content: AnyView(headerContent))
             ),
-            headerHeight: 280
+            headerHeight: 120
         ) {
             VStack(spacing: 16) {
                 // Achievements List
@@ -50,9 +51,9 @@ struct AchievementsView: View {
     // MARK: - Header Content (for custom header)
     private var headerContent: some View {
         VStack(spacing: 0) {
-            // Top padding to avoid overlapping header buttons (56px button height + 24px header top padding + 16px spacing)
+            // Top padding to avoid overlapping header buttons (minimal spacing for 120px header)
             Color.clear
-                .frame(height: 80)
+                .frame(height: 20)
 
             // Stats Cards Grid
             HStack(spacing: 12) {
@@ -213,23 +214,56 @@ struct AchievementsView: View {
                         }
                     }
 
-                    // Reward Badge (for unlocked achievements)
-                    if achievement.unlocked, let reward = achievement.reward {
-                        HStack {
-                            Text("🎉 \(reward)")
-                                .font(.system(size: 12, weight: .bold))
-                                .foregroundColor(Color(hex: "#003049"))
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 4)
-                                .background(
-                                    Color(hex: "#fcbf49")
-                                        .cornerRadius(12)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 12)
-                                                .stroke(Color(hex: "#003049"), lineWidth: 2)
+                    // Reward and Share Badges (for unlocked achievements)
+                    if achievement.unlocked {
+                        VStack(spacing: 8) {
+                            // Reward Badge
+                            if let reward = achievement.reward {
+                                HStack {
+                                    Text("🎉 \(reward)")
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundColor(Color(hex: "#003049"))
+                                        .padding(.horizontal, 12)
+                                        .padding(.vertical, 4)
+                                        .background(
+                                            Color(hex: "#fcbf49")
+                                                .cornerRadius(12)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 12)
+                                                        .stroke(Color(hex: "#003049"), lineWidth: 2)
+                                                )
                                         )
-                                )
-                            Spacer()
+                                    Spacer()
+                                }
+                            }
+
+                            // Share Button
+                            HStack {
+                                Text("Share Achievement")
+                                    .font(.system(size: 12, weight: .bold))
+                                    .foregroundColor(Color(hex: "#003049"))
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 4)
+                                    .background(
+                                        Color.white
+                                            .cornerRadius(12)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12)
+                                                    .stroke(Color(hex: "#003049"), lineWidth: 2)
+                                            )
+                                    )
+
+                                // Share Button Icon
+                                Button(action: {
+                                    shareAchievement(achievement)
+                                }) {
+                                    Image(systemName: "square.and.arrow.up")
+                                        .font(.system(size: 12, weight: .bold))
+                                        .foregroundColor(Color(hex: "#003049"))
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                .padding(.leading, 8)
+                            }
                         }
                         .padding(.top, 4)
                     }
@@ -237,6 +271,20 @@ struct AchievementsView: View {
             }
         }
         .opacity(achievement.unlocked ? 1.0 : 0.7)
+    }
+
+    // MARK: - Share Function
+    private func shareAchievement(_ achievement: Achievement) {
+        let activityViewController = UIActivityViewController(
+            activityItems: [ShareManager.shareAchievement(achievement)],
+            applicationActivities: nil
+        )
+
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first,
+           let rootViewController = window.rootViewController {
+            rootViewController.present(activityViewController, animated: true)
+        }
     }
 
     // MARK: - Helper Functions

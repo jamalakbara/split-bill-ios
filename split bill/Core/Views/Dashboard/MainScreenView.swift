@@ -193,12 +193,12 @@ struct MainScreenView: View {
                             }
                             .buttonStyle(PlainButtonStyle())
                         }
+                    }
 
                         // Bottom padding for safe area
                         Color.clear
                             .frame(height: 100)
                     }
-                }
                 }
             }
         }

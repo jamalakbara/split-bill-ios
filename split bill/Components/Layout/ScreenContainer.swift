@@ -34,7 +34,7 @@ struct ScreenContainer<Content: View>: View {
         customTopPadding: CGFloat? = nil,
         headerType: HeaderType = .simple,
         customHeaderContent: HeaderContentView? = nil,
-        headerHeight: CGFloat = 120,
+        headerHeight: CGFloat = 100,
         @ViewBuilder content: @escaping () -> Content
     ) {
         self.title = title
