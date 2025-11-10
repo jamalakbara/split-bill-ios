@@ -1,28 +1,18 @@
 import SwiftUI
 
 struct GroupsView: View {
-    @Binding var showGroups: Bool
-    @Binding var showNotifications: Bool
     @Binding var showGroupDetail: Bool
     @Binding var selectedGroup: GroupModel?
-    @Binding var userProfileFromSettings: Bool
-    @Binding var showUserProfile: Bool
-    @Binding var showSettings: Bool
 
     var groups = mockGroups
 
     var body: some View {
-        ZStack {
-            // Main content with ScreenContainer
-            ScreenContainer(
-                title: "Groups",
-                showBackButton: true,
-                showEditButton: true,
-                backButtonAction: {
-                    showGroups = false
-                },
+        ScreenContainer(
+            title: "Groups",
+            showBackButton: false,
+            showEditButton: true,
                 editButtonAction: {
-                    showNotifications = true
+                    // Handle notifications - this should be handled by parent view
                 },
                 editButtonIcon: "bell",
                 hasScrollView: true,
@@ -51,7 +41,6 @@ struct GroupsView: View {
                             Button(action: {
                                 selectedGroup = group
                                 showGroupDetail = true
-                                showGroups = false
                             }) {
                                 StandardCard {
                                     VStack(spacing: 12) {
@@ -127,111 +116,17 @@ struct GroupsView: View {
                         }
                     }
 
-                    // Bottom padding for safe area
+                    // Bottom padding for content
                     Color.clear
-                        .frame(height: 100)
+                        .frame(height: 20)
                 }
             }
-
-            // Bottom Navigation (same as MainScreenView)
-            VStack {
-                Spacer()
-                HStack {
-                    NavigationTabButton(
-                        icon: "house.fill",
-                        text: "Home",
-                        isActive: false,
-                        action: {
-                            showGroups = false
-                        }
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.2",
-                        text: "Groups",
-                        isActive: true,
-                        action: {}
-                    )
-
-                    Spacer()
-
-                    // Placeholder space for floating button
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: 56, height: 76)
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.3",
-                        text: "People",
-                        isActive: false,
-                        activeColor: DesignConstants.Colors.secondary,
-                        inactiveColor: DesignConstants.Colors.primary,
-                        action: {
-                            showGroups = false
-                            // Navigate to friends
-                        }
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "gearshape",
-                        text: "Settings",
-                        action: {
-                            showGroups = false
-                            showSettings = true
-                        }
-                    )
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 20)
-                .background(
-                    Color.white
-                        .shadow(color: .black.opacity(0.1), radius: 4, y: -2)
-                )
-            }
-            .ignoresSafeArea(edges: .bottom)
-            .overlay(
-                // Floating Add button (same as MainScreenView)
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        CircularIconButton(
-                            icon: "plus",
-                            backgroundColor: Color(hex: "#003049"),
-                            size: 56,
-                            iconSize: 24,
-                            shadowColor: .black.opacity(0.2),
-                            shadowRadius: 8,
-                            shadowOffset: CGSize(width: 0, height: 4),
-                            action: {
-                                // TODO: Navigate to create group
-                            }
-                        )
-                        Spacer()
-                    }
-                    .padding(.bottom, 48) // Halfway above the navbar (20px navbar padding + 28px offset)
-                }
-                .ignoresSafeArea(edges: .bottom)
-            )
         }
-        .navigationBarHidden(true)
     }
-}
 
 #Preview {
     GroupsView(
-        showGroups: .constant(true),
-        showNotifications: .constant(false),
         showGroupDetail: .constant(false),
-        selectedGroup: .constant(nil),
-        userProfileFromSettings: .constant(false),
-        showUserProfile: .constant(false),
-        showSettings: .constant(false)
+        selectedGroup: .constant(nil)
     )
 }

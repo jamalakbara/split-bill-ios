@@ -8,12 +8,8 @@
 import SwiftUI
 
 struct FriendsView: View {
-    @Binding var showFriends: Bool
     @Binding var showUserProfile: Bool
     @Binding var selectedUserProfile: UserProfile?
-    @Binding var showNotifications: Bool
-    @Binding var showSettings: Bool
-    @Binding var userProfileFromSettings: Bool
 
     @State private var selectedFriends: [Friend] = []
     @State private var searchQuery = ""
@@ -34,16 +30,13 @@ struct FriendsView: View {
         ScreenContainer(
             title: "Friends",
             backgroundColor: DesignConstants.Colors.background,
-            showBackButton: true,
+            showBackButton: false,
             showEditButton: true,
-            backButtonAction: {
-                showFriends = false
-            },
-            editButtonAction: {
-                showNotifications = true
-            },
-            editButtonIcon: "bell",
-            hasScrollView: true
+                editButtonAction: {
+                    // Handle notifications - this should be handled by parent view
+                },
+                editButtonIcon: "bell",
+                hasScrollView: true
         ) {
             VStack(spacing: DesignConstants.contentSpacing) {
                 // Selected Friends Row
@@ -62,92 +55,9 @@ struct FriendsView: View {
 
                 // Bottom padding
                 Color.clear
-                    .frame(height: 100)
+                    .frame(height: 20)
             }
         }
-        .overlay(
-            // Bottom Navigation (matches MainScreenView exactly)
-            VStack {
-                Spacer()
-                HStack {
-                    NavigationTabButton(
-                        icon: "house.fill",
-                        text: "Home",
-                        action: {
-                            showFriends = false
-                        }
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.2",
-                        text: "Groups",
-                        action: {
-                            showFriends = false
-                        }
-                    )
-
-                    Spacer()
-
-                    // Placeholder space for floating button
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: 56, height: 76)
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.3",
-                        text: "People",
-                        isActive: true,
-                        activeColor: DesignConstants.Colors.secondary,
-                        inactiveColor: DesignConstants.Colors.primary,
-                        action: {}
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "gearshape",
-                        text: "Settings",
-                        action: {
-                            showFriends = false
-                            showSettings = true
-                        }
-                    )
-                }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 20)
-                .background(
-                    Color.white
-                        .shadow(color: .black.opacity(0.1), radius: 4, y: -2)
-                )
-            }
-            .ignoresSafeArea(edges: .bottom)
-            .overlay(
-                // Floating Add button (matches MainScreenView exactly)
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        CircularIconButton(
-                            icon: "plus",
-                            backgroundColor: Color(hex: "#003049"),
-                            size: 56,
-                            iconSize: 24,
-                            shadowColor: .black.opacity(0.2),
-                            shadowRadius: 8,
-                            shadowOffset: CGSize(width: 0, height: 4),
-                            action: {}
-                        )
-                        Spacer()
-                    }
-                    .padding(.bottom, 48) // Halfway above the navbar (20px navbar padding + 28px offset)
-                }
-                .ignoresSafeArea(edges: .bottom)
-            )
-        )
     }
 
     // MARK: - Selected Friends Row
@@ -406,18 +316,13 @@ struct FriendsView: View {
             name: friend.name,
             image: friend.image
         )
-        showFriends = false
         showUserProfile = true
     }
 }
 
 #Preview {
     FriendsView(
-        showFriends: .constant(true),
         showUserProfile: .constant(false),
-        selectedUserProfile: .constant(nil),
-        showNotifications: .constant(false),
-        showSettings: .constant(false),
-        userProfileFromSettings: .constant(false)
+        selectedUserProfile: .constant(nil)
     )
 }

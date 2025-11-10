@@ -10,9 +10,7 @@ import SwiftUI
 struct MainScreenView: View {
     @Binding var showViewBill: Bool
     @Binding var selectedBill: RecentBill?
-    @Binding var showSettings: Bool
     @Binding var showNotifications: Bool
-    @Binding var showFriends: Bool
 
     let recentBills = [
         RecentBill(
@@ -201,93 +199,11 @@ struct MainScreenView: View {
                             .frame(height: 100)
                     }
                 }
-            }
-
-            // Bottom Navigation (placeholder)
-            VStack {
-                Spacer()
-                HStack {
-                    NavigationTabButton(
-                        icon: "house.fill",
-                        text: "Home",
-                        isActive: true,
-                        action: {}
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.2",
-                        text: "Groups",
-                        action: {
-                            NotificationCenter.default.post(name: .init("NavigateToGroups"), object: nil)
-                        }
-                    )
-
-                    Spacer()
-
-                    // Placeholder space for floating button
-                    Rectangle()
-                        .fill(Color.clear)
-                        .frame(width: 56, height: 76)
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "person.3",
-                        text: "People",
-                        isActive: false,
-                        activeColor: DesignConstants.Colors.secondary,
-                        inactiveColor: DesignConstants.Colors.primary,
-                        action: {
-                            showFriends = true
-                        }
-                    )
-
-                    Spacer()
-
-                    NavigationTabButton(
-                        icon: "gearshape",
-                        text: "Settings",
-                        action: {
-                            showSettings = true
-                        }
-                    )
                 }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 20)
-                .background(
-                    Color.white
-                        .shadow(color: .black.opacity(0.1), radius: 4, y: -2)
-                )
             }
-            .ignoresSafeArea(edges: .bottom)
-            .overlay(
-                // Floating Add button
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        CircularIconButton(
-                            icon: "plus",
-                            backgroundColor: Color(hex: "#003049"),
-                            size: 56,
-                            iconSize: 24,
-                            shadowColor: .black.opacity(0.2),
-                            shadowRadius: 8,
-                            shadowOffset: CGSize(width: 0, height: 4),
-                            action: {}
-                        )
-                        Spacer()
-                    }
-                    .padding(.bottom, 48) // Halfway above the navbar (20px navbar padding + 28px offset)
-                }
-                .ignoresSafeArea(edges: .bottom)
-            )
-          }
         }
     }
 
 #Preview {
-    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showSettings: .constant(false), showNotifications: .constant(false), showFriends: .constant(false))
+    MainScreenView(showViewBill: .constant(false), selectedBill: .constant(nil), showNotifications: .constant(false))
 }

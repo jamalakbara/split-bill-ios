@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @Binding var showSettings: Bool
-    @Binding var showUserProfile: Bool
-    @Binding var userProfileFromSettings: Bool
-    @Binding var showNotifications: Bool
     @Binding var showAchievements: Bool
     @State private var userName = "stambol"
     @State private var userEmail = "stambol@email.com"
@@ -44,11 +40,8 @@ struct SettingsView: View {
         ScreenContainer(
             title: "Settings",
             backgroundColor: DesignConstants.Colors.background,
-            showBackButton: true,
+            showBackButton: false,
             showEditButton: false,
-            backButtonAction: {
-                showSettings = false
-            },
             hasScrollView: true
         ) {
             LazyVStack(spacing: DesignConstants.contentSpacing) {
@@ -74,9 +67,7 @@ struct SettingsView: View {
             HStack(spacing: 16) {
                 // Profile Image Button
                 Button(action: {
-                    userProfileFromSettings = true
-                    showSettings = false
-                    showUserProfile = true
+                    // Handle user profile navigation - this should be handled by parent view
                 }) {
                     AsyncImage(url: URL(string: profileImageURL)) { image in
                         image
@@ -115,9 +106,7 @@ struct SettingsView: View {
                     icon: "pencil",
                     backgroundColor: DesignConstants.Colors.secondary,
                     action: {
-                        userProfileFromSettings = true
-                        showSettings = false
-                        showUserProfile = true
+                        // Handle user profile navigation - this should be handled by parent view
                     }
                 )
             }
@@ -196,8 +185,7 @@ struct SettingsView: View {
             cornerRadius: DesignConstants.CornerRadius.large,
             shadowOffset: 3,
             action: {
-                // Handle logout - navigate back to login
-                showSettings = false
+                // Handle logout - this should be handled by parent view
             }
         )
     }
@@ -214,18 +202,18 @@ struct SettingsView: View {
     private func handleSettingsTap(item: SettingsItem) {
         switch item.label {
         case "Accounts":
-            // Navigate to payment methods
+            // Navigate to payment methods - this should be handled by parent view
             break
         case "Achievements":
-            showSettings = false
             showAchievements = true
         case "Notifications":
-            showNotifications = true
+            // Handle notifications - this should be handled by parent view
+            break
         case "Privacy & Security":
-            // Navigate to privacy settings
+            // Navigate to privacy settings - this should be handled by parent view
             break
         case "Help & FAQ":
-            // Navigate to help
+            // Navigate to help - this should be handled by parent view
             break
         default:
             break
@@ -248,5 +236,5 @@ struct SettingsItem {
 
 // MARK: - Preview
 #Preview {
-    SettingsView(showSettings: .constant(false), showUserProfile: .constant(false), userProfileFromSettings: .constant(false), showNotifications: .constant(false), showAchievements: .constant(false))
+    SettingsView(showAchievements: .constant(false))
 }

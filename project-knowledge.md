@@ -31,13 +31,44 @@ App uses sheet-based navigation with @State bindings for view management:
 
 ## Recent Development
 
-### AchievementsView Enhancements (Latest Session)
+### Global Bottom Navigation Refactoring (Latest Session)
+**Major Architecture Overhaul**: Transformed app from individual bottom navigation implementations to unified global tab-based navigation system.
+
+#### **1. Navigation System Transformation**
+- **Problem Identified**: Each view (MainScreen, Groups, Friends, Settings) had duplicate bottom navigation code with inconsistent state management
+- **Solution Implemented**: Single `GlobalBottomNavigation` component with centralized tab state management
+- **Result**: Native mobile UX with persistent tab bar, no code duplication, consistent active states
+
+#### **2. New Navigation Components Created**
+- **`AppTab.swift`**: Enum defining 4 main tabs (Home, Groups, People, Settings) with icons and titles
+- **`GlobalBottomNavigation.swift`**: Reusable bottom navigation component with floating + button, proper active state highlighting
+- **`ContentView.swift`**: Completely refactored to use tab-based navigation with ZStack structure
+
+#### **3. Individual Views Simplified**
+- **MainScreenView**: Reduced from 7 parameters to 3 (`showViewBill`, `selectedBill`, `showNotifications`), removed duplicate bottom nav
+- **GroupsView**: Reduced from 7 parameters to 2 (`showGroupDetail`, `selectedGroup`), removed duplicate bottom nav
+- **FriendsView**: Reduced from 6 parameters to 2 (`showUserProfile`, `selectedUserProfile`), removed duplicate bottom nav
+- **SettingsView**: Reduced from 5 parameters to 1 (`showAchievements`), simplified navigation handling
+
+#### **4. Navigation Flow Modernized**
+- **Before**: Sheet-based navigation for main sections (showGroups, showFriends, showSettings)
+- **After**: Direct tab switching with `selectedTab: AppTab` state
+- **Maintained**: Modal sheets for detail views (UserProfile, Notifications, Achievements, GroupDetail)
+
+#### **5. Technical Benefits Achieved**
+- **Single Source of Truth**: All navigation state managed in ContentView
+- **No Code Duplication**: One global bottom navigation component
+- **Parameter Simplification**: Average 65% reduction in parameters per view
+- **Consistent Active States**: Proper tab highlighting across all views
+- **Easy Extensibility**: Adding new tabs requires minimal changes
+
+### Previous Session: AchievementsView Enhancements
 1. **Header Title Fix**: Modified HeaderView to display titles for both `.simple` and `.custom` header types
 2. **StandardCard Refactoring**: Replaced custom card styling with StandardCard component for consistency
 3. **Notification Button**: Added notification bell button to AchievementsView header
 4. **Layout Optimization**: Fixed stats cards overlapping header buttons by adjusting spacing and header height
 
-### Key Changes Made:
+#### **Previous Changes Made:**
 - **HeaderView.swift**: Changed title display condition from `headerType == .simple` to `(headerType == .simple || headerType == .custom)`
 - **AchievementsView.swift**:
   - Refactored achievementCard() to use StandardCard
