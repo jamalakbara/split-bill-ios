@@ -9,6 +9,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Binding var showAchievements: Bool
+    @Binding var showAccountList: Bool
     @State private var userName = "stambol"
     @State private var userEmail = "stambol@email.com"
     @State private var profileImageURL = "https://images.unsplash.com/photo-1750535135451-7c20e24b60c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjYXJ0b29uJTIwYXZhdGFyJTIwaWxsdXN0cmF0aW9ufGVufDF8fHx8MTc2MjU2OTYwOHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
@@ -206,8 +207,7 @@ struct SettingsView: View {
     private func handleSettingsTap(item: SettingsItem) {
         switch item.label {
         case "Accounts":
-            // Navigate to payment methods - this should be handled by parent view
-            break
+            showAccountList = true
         case "Achievements":
             showAchievements = true
         case "Notifications":
@@ -240,5 +240,5 @@ struct SettingsItem {
 
 // MARK: - Preview
 #Preview {
-    SettingsView(showAchievements: .constant(false))
+    SettingsView(showAchievements: .constant(false), showAccountList: .constant(false))
 }

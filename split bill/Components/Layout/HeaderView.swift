@@ -148,7 +148,7 @@ struct HeaderView: View {
         }
 
         // For detail headers, use custom content as part of the label
-        if headerType == .detail, let customContent = customContent {
+        if headerType == .detail, customContent != nil {
             components.append("Detail view")
         }
 

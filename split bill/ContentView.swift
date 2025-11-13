@@ -26,6 +26,8 @@ struct ContentView: View {
     @State private var showAchievements = false
     @State private var showGroupDetail = false
     @State private var selectedGroup: GroupModel?
+    @State private var showAccountList = false
+    @State private var showAddAccount = false
 
     // Helper states for modal navigation
     @State private var showGroups = false
@@ -101,6 +103,29 @@ struct ContentView: View {
                     .presentationDragIndicator(.visible)
                     .presentationCornerRadius(DesignConstants.CornerRadius.large)
             }
+        } else if showAddAccount {
+            AddAccountView(
+                showAddCard: $showAddAccount,
+                showAccountList: $showAccountList
+            )
+            .sheet(isPresented: $showNotifications) {
+                NotificationsView(showNotifications: $showNotifications)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(DesignConstants.CornerRadius.large)
+            }
+        } else if showAccountList {
+            AccountListView(
+                showAccountList: $showAccountList,
+                showSettings: .constant(false),
+                showAddCard: $showAddAccount
+            )
+            .sheet(isPresented: $showNotifications) {
+                NotificationsView(showNotifications: $showNotifications)
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(DesignConstants.CornerRadius.large)
+            }
         } else if showMainScreen {
             // Main app with tab-based navigation
             ZStack {
@@ -124,7 +149,7 @@ struct ContentView: View {
                             selectedUserProfile: $selectedUserProfile
                         )
                     case .settings:
-                        SettingsView(showAchievements: $showAchievements)
+                        SettingsView(showAchievements: $showAchievements, showAccountList: $showAccountList)
                     }
                 }
 
